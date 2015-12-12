@@ -13,16 +13,20 @@ Wakeup.prototype.snooze = function(success, error, options) {
     exec(success, error, "WakeupPlugin", "snooze", [options]);
 };
 
-Wakeup.prototype.iswakeup = function(success, error) {
-    exec(success, error, "WakeupPlugin", "iswakeup");
+Wakeup.prototype.iswakeup = function(result) {
+    exec(function(){
+		result(true);
+	}, function(){
+		result(false);
+	}, "WakeupPlugin", "iswakeup", []);
 };
 
-Wakeup.prototype.wakescreen = function(success, error) {
-    exec(success, error, "WakeupPlugin", "wakescreen");
+Wakeup.prototype.wakescreen = function() {
+    exec(function(){}, function(){}, "WakeupPlugin", "wakescreen", []);
 };
 
-Wakeup.prototype.cancelwakescreen = function(success, error) {
-    exec(success, error, "WakeupPlugin", "cancelwakescreen");
+Wakeup.prototype.cancelwakescreen = function() {
+    exec(function(){}, function(){}, "WakeupPlugin", "cancelwakescreen", []);
 };
 
 module.exports = new Wakeup();
