@@ -26,6 +26,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import android.view.WindowManager;
+
 public class WakeupPlugin extends CordovaPlugin {
 
 	protected static final String LOG_TAG = "WakeupPlugin";
@@ -92,6 +94,49 @@ public class WakeupPlugin extends CordovaPlugin {
 						
 				WakeupPlugin.connectionCallbackContext = callbackContext;
 				PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+				pluginResult.setKeepCallback(true);
+				callbackContext.sendPluginResult(pluginResult);  
+			}else if(action.equalsIgnoreCase("wakescreen")) {
+				cordova.getActivity().runOnUiThread(new Runnable(){
+					@Override
+					public void run() 
+					{
+						cordova.getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+						cordova.getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+						cordova.getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+						cordova.getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+					}
+				});
+				
+				WakeupPlugin.connectionCallbackContext = callbackContext;
+				PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+				pluginResult.setKeepCallback(true);
+				callbackContext.sendPluginResult(pluginResult);  
+			}else if(action.equalsIgnoreCase("cancelwakescreen")) {
+				cordova.getActivity().runOnUiThread(new Runnable(){
+					@Override
+					public void run() 
+					{
+						cordova.getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+						cordova.getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+						cordova.getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+						cordova.getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+					}
+				});
+				
+				WakeupPlugin.connectionCallbackContext = callbackContext;
+				PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+				pluginResult.setKeepCallback(true);
+				callbackContext.sendPluginResult(pluginResult);  
+			}else if(action.equalsIgnoreCase("iswakeup")) {
+				WakeupPlugin.connectionCallbackContext = callbackContext;
+				PluginResult pluginResult;
+				Bundle extras = cordova.getActivity().getIntent().getExtras();
+				if (extras!=null && !extras.getBoolean("wakeup", false)) {
+					pluginResult = new PluginResult(PluginResult.Status.ERROR);
+				}else{
+					pluginResult = new PluginResult(PluginResult.Status.OK);
+				}
 				pluginResult.setKeepCallback(true);
 				callbackContext.sendPluginResult(pluginResult);  
 			}else{
