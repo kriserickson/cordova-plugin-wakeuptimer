@@ -136,6 +136,7 @@ public class WakeupPlugin extends CordovaPlugin {
 					pluginResult = new PluginResult(PluginResult.Status.OK);
 				}else{
 					pluginResult = new PluginResult(PluginResult.Status.ERROR);
+					ret = false;
 				}
 				pluginResult.setKeepCallback(true);
 				callbackContext.sendPluginResult(pluginResult);  
@@ -143,7 +144,7 @@ public class WakeupPlugin extends CordovaPlugin {
 				PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, LOG_TAG + " error: invalid action (" + action + ")");
 				pluginResult.setKeepCallback(true);
 				callbackContext.sendPluginResult(pluginResult);  
-				ret=false;
+				ret = false;
 			}
 		} catch (JSONException e) {
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, LOG_TAG + " error: invalid json");
