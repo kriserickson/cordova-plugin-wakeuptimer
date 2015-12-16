@@ -132,10 +132,10 @@ public class WakeupPlugin extends CordovaPlugin {
 				WakeupPlugin.connectionCallbackContext = callbackContext;
 				PluginResult pluginResult;
 				Bundle extras = cordova.getActivity().getIntent().getExtras();
-				if (extras!=null && !extras.getBoolean("wakeup", false)) {
-					pluginResult = new PluginResult(PluginResult.Status.ERROR);
-				}else{
+				if (extras!=null && extras.getBoolean("wakeup", false)) {
 					pluginResult = new PluginResult(PluginResult.Status.OK);
+				}else{
+					pluginResult = new PluginResult(PluginResult.Status.ERROR);
 				}
 				pluginResult.setKeepCallback(true);
 				callbackContext.sendPluginResult(pluginResult);  
