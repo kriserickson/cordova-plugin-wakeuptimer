@@ -244,7 +244,7 @@ static NSString * const kWakeupPluginAlarmSettingsFile = @"alarmsettings.plist";
                 NSArray * days = [alarm valueForKeyPath:kWakeupPluginJSONDaysKey];
                 for (int j=0;j<[days count];j++) {
                     NSDate * alarmDate = [self wup_getAlarmDate:time day:[self wup_dayOfWeekIndex:[days objectAtIndex:j]]];
-                    [self wup_setNotification:type alarmDate:alarmDate extra:extra message:message action:action sound:sound repeatInterval:NSWeekCalendarUnit];
+                    [self wup_setNotification:type alarmDate:alarmDate extra:extra message:message action:action sound:sound repeatInterval:WeekCalendarUnit];
                 }
             } else if ( [type isEqualToString:kWakeupPluginJSONSnoozeValue]) {
                 [self wup_cancelSnooze];
@@ -299,8 +299,8 @@ static NSString * const kWakeupPluginAlarmSettingsFile = @"alarmsettings.plist";
     NSDate * now = [NSDate date];
     int hour=[time objectForKey:kWakeupPluginJSONHourKey]!=nil ? [[time objectForKey:kWakeupPluginJSONHourKey] intValue] : -1;
     int minute=[time objectForKey:kWakeupPluginJSONMinuteKey]!=nil ? [[time objectForKey:kWakeupPluginJSONMinuteKey] intValue] : 0;
-    NSCalendar * gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateComponents *nowComponents =[gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:now]; // set to current day
+    NSCalendar * gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:GregorianCalendar];
+    NSDateComponents *nowComponents =[gregorian components:(YearCalendarUnit | MonthCalendarUnit | DayCalendarUnit) fromDate:now]; // set to current day
     [nowComponents setHour:hour];
     [nowComponents setMinute:minute];
     [nowComponents setSecond:0];
@@ -324,14 +324,14 @@ static NSString * const kWakeupPluginAlarmSettingsFile = @"alarmsettings.plist";
     int minute=[time objectForKey:kWakeupPluginJSONMinuteKey]!=nil ? [[time objectForKey:kWakeupPluginJSONMinuteKey] intValue] : 0;
     
     if (hour>=0 && dayOfWeek >= 0) {
-        NSCalendar * gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-        NSDateComponents *nowComponents =[gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:now];
+        NSCalendar * gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:GregorianCalendar];
+        NSDateComponents *nowComponents =[gregorian components:(YearCalendarUnit | MonthCalendarUnit | DayCalendarUnit) fromDate:now];
         [nowComponents setHour:hour];
         [nowComponents setMinute:minute];
         [nowComponents setSecond:0];
         
-        gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-        NSDateComponents *weekdayComponents =[gregorian components:NSWeekdayCalendarUnit fromDate:[NSDate date]];
+        gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:GregorianCalendar];
+        NSDateComponents *weekdayComponents =[gregorian components:WeekdayCalendarUnit fromDate:[NSDate date]];
         NSInteger currentDayOfWeek = [weekdayComponents weekday]; // 1-7 = Sunday-Saturday
         currentDayOfWeek--; // make zero-based
         
@@ -370,7 +370,7 @@ static NSString * const kWakeupPluginAlarmSettingsFile = @"alarmsettings.plist";
     int seconds=[time objectForKey:kWakeupPluginJSONSecondsKey]!=nil ? [[time objectForKey:kWakeupPluginJSONSecondsKey] intValue] : -1;
 
     if (seconds>=0){
-        NSCalendar * gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSCalendar * gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:GregorianCalendar];
         NSDateComponents * addSeconds = [[NSDateComponents alloc] init];
         [addSeconds setSecond:seconds];
         alarmDate = [gregorian dateByAddingComponents:addSeconds toDate:alarmDate options:0];
@@ -384,7 +384,7 @@ static NSString * const kWakeupPluginAlarmSettingsFile = @"alarmsettings.plist";
 {
     // extracts hour/minutes/seconds from NSDate, converts to seconds since midnight
     NSCalendar* curCalendar = [NSCalendar currentCalendar];
-    const unsigned units    = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+    const unsigned units    = HourCalendarUnit | MinuteCalendarUnit | SecondCalendarUnit;
     NSDateComponents* comps = [curCalendar components:units fromDate:time];
     int hour = (int)[comps hour];
     int min  = (int)[comps minute];
